@@ -2,9 +2,10 @@
 # script to automate the creation of chroot jail
 # w/ minimal executables to run git
 
-export CHROOT=/home/chroot
+export CHROOT=/home/sunny/chroot
 
-function copy_binary() {
+function copy_binary()
+{
     for i in $(ldd $*|grep -v dynamic|cut -d " " -f 3|sed 's/://'|sort|uniq)
         do
           cp --parents $i $CHROOT
@@ -35,7 +36,8 @@ chmod 0666 $CHROOT/dev/{null,tty,zero}
 chown root.tty $CHROOT/dev/tty
 
 # copy programs and libraries
-copy_binary /bin/{bash,ls,cp,rm,cat,mkdir,ln,grep,cut,sed} /usr/bin/{vim,ssh,head,tail,which,id,find,xargs} `which git`
+copy_binary /bin/{bash,ls,cp,rm,cat,mkdir,ln,grep,cut,sed} /usr/bin/{vim,ssh,head,tail,which,id,find,xargs} 
+copy_binary  `which git` `which git-receive-pack` `which git-shell` `which git-upload-archive` `which git-upload-pack` 
 
 # copy git resource files
 cp -r --parents /usr/share/git-core $CHROOT
